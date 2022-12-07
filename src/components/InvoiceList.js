@@ -47,9 +47,9 @@ const InvoiceList = () => {
         >
           <thead className="thead-dark">
             <tr>
-              <th>Sąskaitos numeris</th>
-              <th>Sąskaitos data kodas</th>
-              <th>Klientas</th>
+              <th>Sąskaitos numeris123</th>
+              <th>Sąskaitos data kodas123</th>
+              <th>Klientas123</th>
             </tr>
           </thead>
           <tbody>
