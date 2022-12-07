@@ -47,7 +47,7 @@ const CustomersList = () => {
         >
           <thead className="thead-dark">
             <tr>
-              <th>Vardas</th>
+              <th>Name</th>
               <th>Pavardė</th>
               <th>Email</th>
               <th>Tipas</th>
