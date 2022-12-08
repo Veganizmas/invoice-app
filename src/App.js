@@ -29,5 +29,5 @@ const App = () => {
     </>
   );
 };
-
+//komentaras
 export default App;
