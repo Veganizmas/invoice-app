@@ -1,36 +1,55 @@
 import React from "react";
+import Select from "react-select"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import invoiceService from "../services/invoice.service";
 import customerService from "../services/customer.service";
-import Select from 'react-select';
+import CustomersList from "./CustomersList";
+import "bootstrap/dist/css/bootstrap.min.css";
+import itemService from "../services/item.service";
 
 const AddInvoice = () => {
-
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-      ]
-
-    const {invoiceNumber} = useParams();
-    const [date, setDate] = useState('');
-    const [customer, setCustomer] = useState({});
+  const {invoiceNumber} = useParams();
+    const [myDate, setDate] = useState('');
+    const [customer, setCustomer] = useState([]);
     const [invoiceItems, setInvoiceItems] = useState([]);
     const navigate = useNavigate();
     const {id} = useParams();
-    const [customers, setCustomers] = useState([]); 
+    const[customerId, setCustomers] = useState([]);
 
-    const saveInvoice = (e) => {
+const init = () => {
+    customerService
+        .getAll()
+        .then((response) => {
+            console.log("Printing Customer data", response.data);
+            setCustomer(response.data);
+        })
+        .catch((error) => {
+            console.log("Ups", error);
+        });
+
+      
+    itemService
+        .getAll()
+        .then((response) => {
+            console.log("Printing Items data", response.data);
+            setInvoiceItems(response.data);
+        })
+        .catch((error) => {
+            console.log("Ups", error);
+        });  
+  };
+   
+const saveInvoice = (e) => {
         e.preventDefault();
-
-        const invoice = {invoiceNumber, date, customer, invoiceItems, id};
+        
+        const invoice = {invoiceNumber, myDate, customerId, invoiceItems};
         if (id) {
             // update record
             invoiceService.update(invoice)
                 .then(response => {
                     console.log('Invoice data updated successfully', response.data);
-                    navigate('/invoices'); 
+                    navigate('/items'); 
             })
             .catch(error => {
                 console.log('Something went wrong', error);
@@ -43,79 +62,75 @@ const AddInvoice = () => {
                 navigate('/invoices');
             })
             .catch(error => {
-                console.log('Something went wrong', error);
+                console.log('Something went wrong555', error);
             })
         }
     }
 
+  
     useEffect(() => {
+        
+        init();
+       
         if (id) {
           invoiceService.get(id)
-                .then(invoice => {
-                    setDate(invoice.data.date);
-                    setCustomer(invoice.data.customer);
-                    setInvoiceItems(invoice.data.invoiceItems);
-                   
+            .then(invoice => {
+             // setInvoiceNumber(invoice.data.invoiceNumber);
+                setDate(invoice.data.myDate);
+                setCustomers(invoice.data.customerId);
+                setInvoiceItems(invoice.data.invoiceItems);     
             })
             .catch(error => {
                 console.log('Something went wrong', error);
             })
         }
-        customerService.getAll().then( data => {
-            setCustomers(data);
-            console.log(data);
-        } ).catch(error => {
-            console.log('Got error when downloading customers', error);
-        })
     },[])
 
+    console.log(customerId)
+   
     return(
         <div className="container">
-            <h3>Pridėti sąskaitą</h3>
+            <h3>Pridėti saskaita</h3>
             <hr/>
             <form>
                 <div className="form-group">
-                <p>{invoiceNumber}</p>
+                    {/* <p>{invoiceNumber}</p> */}
                 </div>
-
+                
                 <div className="form-group">
                     <input
                        type="date"
                        className="form-control col-4"
                        id="date"
-                       value={date}
+                       value={myDate}
                        onChange={(e) => setDate(e.target.value)}
-                       placeholder="Įveskite datą"
+                       placeholder="Įveskite data"
                     /> 
-
                 </div>
-
                 
                 <div className="form-group">
-                    <Select
-                       //type="text"
-                       className=" col-4"
-                    //    id="customer"
-                    //    value={customer}
-                    //   onChange={(e) => setCustomer(e.target.value)}
-                       options={options}
-                    >
+                    <Select                   
+                        options={customer}
+                        getOptionLabel = {a => a.vardas}
+                        getOptionValue={a => a}  
+                        className=" col-4"
+                        id="customer"
+                        onChange={(e) => setCustomers(e)} 
+                        > 
                     </Select>
                 </div>
+                {/* <Select 
+                   // type="text"
+                    className="col-4"
+                    id="invoiceItems"
+                    //value={invoiceItems}
+                    options={invoiceItems}
+                    getOptionLabel = {a => a.pavadinimas}
+                    getOptionValue={a => a}
+                    onChange={(e) => setInvoiceItems(e)}
+                    >
+                </Select> */}
                 
-
-                <div className="form-group">
-                    <input
-                       type="text"
-                       className="form-control col-4"
-                       id="grupe"
-                       value={invoiceItems}
-                       onChange={(e) => setInvoiceItems(e.target.value)}
-                       placeholder="įveskite prekę"
-                    /> 
-
-                </div>
-
                 <br />
                 <div>
                     <button onClick={(e) => saveInvoice(e)}
@@ -123,7 +138,7 @@ const AddInvoice = () => {
                 </div>
             </form>
             <hr/>
-            <Link to="/invoices">Atgal į sąrašą</Link>
+            <Link to="/items">Atgal į sąrašą</Link>
         </div>
     )
 };
