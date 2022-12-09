@@ -6,7 +6,7 @@ import invoiceService from "../services/invoice.service";
 import customerService from "../services/customer.service";
 import CustomersList from "./CustomersList";
 import "bootstrap/dist/css/bootstrap.min.css";
-import itemService from "../services/items.service";
+import itemService from "../services/item.service";
 
 const AddInvoice = () => {
   const {invoiceNumber} = useParams();
