@@ -47,17 +47,18 @@ const InvoiceList = () => {
         >
           <thead className="thead-dark">
             <tr>
-              <th>Sąskaitos numeris123</th>
-              <th>Sąskaitos data kodas123</th>
-              <th>Klientas123</th>
+              <th>Sąskaitos numeris</th>
+              <th>Sąskaitos data kodas</th>
+              <th>Klientas</th>
+              <th>Veiksmai</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.id}>
                 <td>{invoice.invoiceNumber}</td>
-                <td>{invoice.date}</td>
-                <td>{invoice.customer.data.vardas}</td>
+                <td>{invoice.myDate}</td>
+                <td>{invoice.customerId.vardas}</td>
                 <td>
                   <Link to={`/invoices/edit/${invoice.id}`} className="btn btn-info">
                     Atnaujinti
