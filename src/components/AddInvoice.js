@@ -9,7 +9,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
 
 const AddInvoice = () => {
+<<<<<<< HEAD
   const {invoiceNumber} = useParams();
+=======
+    const [invoiceNumber, setInvoiceNumber] = useState('');
+>>>>>>> 735dc937a1b4a4ee77eb9f188d4fb0e79ee1a21e
     const [myDate, setDate] = useState('');
     const [customer, setCustomer] = useState([]);
     const [invoiceItems, setInvoiceItems] = useState([]);
@@ -75,7 +79,11 @@ const saveInvoice = (e) => {
         if (id) {
           invoiceService.get(id)
             .then(invoice => {
+<<<<<<< HEAD
              // setInvoiceNumber(invoice.data.invoiceNumber);
+=======
+                setInvoiceNumber(invoice.data.invoiceNumber);
+>>>>>>> 735dc937a1b4a4ee77eb9f188d4fb0e79ee1a21e
                 setDate(invoice.data.myDate);
                 setCustomers(invoice.data.customerId);
                 setInvoiceItems(invoice.data.invoiceItems);     
@@ -111,7 +119,11 @@ const saveInvoice = (e) => {
                 <div className="form-group">
                     <Select                   
                         options={customer}
+<<<<<<< HEAD
                         getOptionLabel = {a => a.vardas}
+=======
+                        getOptionLabel = {a => a.vardas + " " + a.pavarde}
+>>>>>>> 735dc937a1b4a4ee77eb9f188d4fb0e79ee1a21e
                         getOptionValue={a => a}  
                         className=" col-4"
                         id="customer"
@@ -119,6 +131,21 @@ const saveInvoice = (e) => {
                         > 
                     </Select>
                 </div>
+<<<<<<< HEAD
+=======
+                <div className="form-group">
+                    <input
+                       type="text"
+                       className="form-control col-4"
+                       id="Invoice number"
+                       value={invoiceNumber}
+                       onChange={(e) => setInvoiceNumber(e.target.value)}
+                       placeholder="Įveskite sąskaitos numberį"
+                    /> 
+
+                </div>
+                
+>>>>>>> 735dc937a1b4a4ee77eb9f188d4fb0e79ee1a21e
                 {/* <Select 
                    // type="text"
                     className="col-4"
@@ -142,5 +169,5 @@ const saveInvoice = (e) => {
         </div>
     )
 };
-
+//fdsfds
 export default AddInvoice;

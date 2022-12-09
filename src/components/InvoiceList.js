@@ -48,21 +48,26 @@ const InvoiceList = () => {
           <thead className="thead-dark">
             <tr>
               <th>Sąskaitos numeris</th>
-              <th>Sąskaitos data kodas</th>
+              <th>Sąskaitos data</th>
               <th>Klientas</th>
+              <th>Veiksmai</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.id}>
                 <td>{invoice.invoiceNumber}</td>
-                <td>{invoice.date}</td>
-                <td>{invoice.customer.data.vardas}</td>
+                <td>{invoice.myDate}</td>
+                <td>{invoice.customerId.vardas + " " + invoice.customerId.pavarde}</td>
                 <td>
+                <Link to={`/invoices/invoicepreview/${invoice.id}`} className="btn btn-info mr-2">
+                    Peržiūra
+                  </Link>
+
                   <Link to={`/invoices/edit/${invoice.id}`} className="btn btn-info">
                     Atnaujinti
                   </Link>
-                  <button
+                  <button 
                     className="btn btn-danger ml-2"
                     onClick={(e) => {
                       handleDelete(invoice.id);
@@ -70,6 +75,7 @@ const InvoiceList = () => {
                   >
                     Ištrinti
                   </button>
+                  
                 </td>
               </tr>
             ))}

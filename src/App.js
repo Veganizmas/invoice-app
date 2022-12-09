@@ -8,6 +8,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home"
 import InvoiceList from "./components/InvoiceList";
 import AddInvoice from "./components/AddInvoice";
+import InvoicePreview from "./components/InvoicePreview";
 
 const App = () => {
   return (
@@ -24,10 +25,11 @@ const App = () => {
         <Route path="/invoices" element={<InvoiceList />}></Route>
         <Route path="/invoices/add/" element={<AddInvoice />}></Route>
         <Route path="/invoices/edit/:id" element={<AddInvoice />}></Route>
+        <Route path="/invoices/invoicepreview/:id" element={<InvoicePreview />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </>
   );
 };
-
+//komentarass
 export default App;
