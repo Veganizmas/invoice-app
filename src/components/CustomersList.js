@@ -39,7 +39,7 @@ const CustomersList = () => {
       <h3>Klientų sąrašas</h3>
       <hr />
       <div>
-        <Link to = "/customers/add" className="btn btn-primary mb-2">Pridėti klientą</Link>
+        <Link to = "/customers/add" className="btn btn-outline-primary btn-block btn-lg mb-2">Pridėti klientą</Link>
         <table
           border="1"
           cellPadding="10"
@@ -70,12 +70,12 @@ const CustomersList = () => {
                 <td>
                   <Link
                     to={`/customers/edit/${customer.id}`}
-                    className="btn btn-info"
+                    className="btn btn-outline-success"
                   >
                     Atnaujinti
                   </Link>
                   <button
-                    className="btn btn-danger ml-2"
+                    className="btn btn-outline-danger mt-2"
                     onClick={(e) => {
                       handleDelete(customer.id);
                     }}
