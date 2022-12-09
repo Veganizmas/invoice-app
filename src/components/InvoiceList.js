@@ -3,6 +3,8 @@ import invoiceService from "../services/invoice.service";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
+
 const InvoiceList = () => {
   const [invoices, setInvoices] = useState([]);
 
@@ -39,7 +41,7 @@ const InvoiceList = () => {
       <h3>Sąskaitų sąrašas</h3>
       <hr />
       <div>
-        <Link to = "/invoices/add" className="btn btn-primary mb-2">Pridėti sąskaitą</Link>
+        <Link to = "/invoices/add" className="btn btn-block btn-primary mb-2">Pridėti sąskaitą</Link>
         <table
           border="1"
           cellPadding="10"
@@ -48,7 +50,7 @@ const InvoiceList = () => {
           <thead className="thead-dark">
             <tr>
               <th>Sąskaitos numeris</th>
-              <th>Sąskaitos data kodas</th>
+              <th>Sąskaitos data</th>
               <th>Klientas</th>
               <th>Veiksmai</th>
             </tr>
@@ -58,19 +60,24 @@ const InvoiceList = () => {
               <tr key={invoice.id}>
                 <td>{invoice.invoiceNumber}</td>
                 <td>{invoice.myDate}</td>
-                <td>{invoice.customerId.vardas}</td>
+                <td>{invoice.customerId.vardas + " " + invoice.customerId.pavarde}</td>
                 <td>
-                  <Link to={`/invoices/edit/${invoice.id}`} className="btn btn-info">
+                <Link to={`/invoices/invoicepreview/${invoice.id}`} className="btn btn-info btn-sm mr-2">
+                    Peržiūra
+                  </Link>
+
+                  <Link to={`/invoices/edit/${invoice.id}`} className="btn btn-success btn-sm mr-2">
                     Atnaujinti
                   </Link>
-                  <button
-                    className="btn btn-danger ml-2"
+                  <button 
+                    className="btn btn-sm btn-danger"
                     onClick={(e) => {
                       handleDelete(invoice.id);
                     }}
                   >
                     Ištrinti
                   </button>
+                  
                 </td>
               </tr>
             ))}
