@@ -12,10 +12,13 @@ const AddInvoice = () => {
     const [invoiceNumber, setInvoiceNumber] = useState('');
     const [myDate, setDate] = useState('');
     const [customer, setCustomer] = useState([]);
+    const [item, setItem] = useState([]);
     const [invoiceItems, setInvoiceItems] = useState([]);
     const navigate = useNavigate();
     const {id} = useParams();
     const[customerId, setCustomers] = useState([]);
+    const [items, setItems] = useState([]);
+    const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
 
 const init = () => {
     customerService
@@ -43,13 +46,13 @@ const init = () => {
 const saveInvoice = (e) => {
         e.preventDefault();
         
-        const invoice = {invoiceNumber, myDate, customerId, invoiceItems};
+        const invoice = {invoiceNumber, myDate, customerId, invoiceItems, selectedInvoiceItems};
         if (id) {
             // update record
             invoiceService.update(invoice)
                 .then(response => {
                     console.log('Invoice data updated successfully', response.data);
-                    navigate('/items'); 
+                    navigate('/invoices'); 
             })
             .catch(error => {
                 console.log('Something went wrong', error);
@@ -79,12 +82,28 @@ const saveInvoice = (e) => {
                 setDate(invoice.data.myDate);
                 setCustomers(invoice.data.customerId);
                 setInvoiceItems(invoice.data.invoiceItems);     
+                setSelectedInvoiceItems(invoice.data.selectedInvoiceItems);     
             })
             .catch(error => {
                 console.log('Something went wrong', error);
             })
         }
+        
     },[])
+
+    const setMyCustomer = (e) => {
+        console.log(e)
+        setCustomers(e)
+
+    }
+    // const pabandymas = () => {
+    //     if (id) {
+    //         return customerId.vardas;
+    //     } else{
+    //         return null;
+    //     }
+    // }
+    
 
     console.log(customerId)
    
@@ -112,10 +131,11 @@ const saveInvoice = (e) => {
                     <Select                   
                         options={customer}
                         getOptionLabel = {a => a.vardas + " " + a.pavarde}
-                        getOptionValue={a => a}  
+                        getOptionValue={a => a} 
                         className=" col-4"
                         id="customer"
-                        onChange={(e) => setCustomers(e)} 
+                        //value={}
+                        onChange={setMyCustomer} 
                         > 
                     </Select>
                 </div>
@@ -131,17 +151,18 @@ const saveInvoice = (e) => {
 
                 </div>
                 
-                {/* <Select 
-                   // type="text"
-                    className="col-4"
-                    id="invoiceItems"
-                    //value={invoiceItems}
-                    options={invoiceItems}
-                    getOptionLabel = {a => a.pavadinimas}
-                    getOptionValue={a => a}
-                    onChange={(e) => setInvoiceItems(e)}
-                    >
-                </Select> */}
+                <div className="form-group">
+                    <Select                   
+                        options={invoiceItems}
+                        getOptionLabel = {b => b.pavadinimas}
+                        getOptionValue={b => b}
+                        isMulti  
+                        className=" col-4"
+                        id="item"
+                        onChange={(e) => setSelectedInvoiceItems(e)} 
+                        > 
+                    </Select>
+                </div>
                 
                 <br />
                 <div>
@@ -154,5 +175,5 @@ const saveInvoice = (e) => {
         </div>
     )
 };
-//fdsfds
+
 export default AddInvoice;
