@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
 
 const AddInvoice = () => {
-  const {invoiceNumber} = useParams();
+    const [invoiceNumber, setInvoiceNumber] = useState('');
     const [myDate, setDate] = useState('');
     const [customer, setCustomer] = useState([]);
     const [invoiceItems, setInvoiceItems] = useState([]);
@@ -75,7 +75,7 @@ const saveInvoice = (e) => {
         if (id) {
           invoiceService.get(id)
             .then(invoice => {
-             // setInvoiceNumber(invoice.data.invoiceNumber);
+                setInvoiceNumber(invoice.data.invoiceNumber);
                 setDate(invoice.data.myDate);
                 setCustomers(invoice.data.customerId);
                 setInvoiceItems(invoice.data.invoiceItems);     
@@ -111,7 +111,7 @@ const saveInvoice = (e) => {
                 <div className="form-group">
                     <Select                   
                         options={customer}
-                        getOptionLabel = {a => a.vardas}
+                        getOptionLabel = {a => a.vardas + " " + a.pavarde}
                         getOptionValue={a => a}  
                         className=" col-4"
                         id="customer"
@@ -119,6 +119,18 @@ const saveInvoice = (e) => {
                         > 
                     </Select>
                 </div>
+                <div className="form-group">
+                    <input
+                       type="text"
+                       className="form-control col-4"
+                       id="Invoice number"
+                       value={invoiceNumber}
+                       onChange={(e) => setInvoiceNumber(e.target.value)}
+                       placeholder="Įveskite sąskaitos numberį"
+                    /> 
+
+                </div>
+                
                 {/* <Select 
                    // type="text"
                     className="col-4"
@@ -138,7 +150,7 @@ const saveInvoice = (e) => {
                 </div>
             </form>
             <hr/>
-            <Link to="/items">Atgal į sąrašą</Link>
+            <Link to="/invoices">Atgal į sąrašą</Link>
         </div>
     )
 };
