@@ -70,12 +70,12 @@ const CustomersList = () => {
                 <td>
                   <Link
                     to={`/customers/edit/${customer.id}`}
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success  mr-2 "
                   >
                     Atnaujinti
                   </Link>
                   <button
-                    className="btn btn-outline-danger mt-2"
+                    className="btn btn-outline-danger"
                     onClick={(e) => {
                       handleDelete(customer.id);
                     }}

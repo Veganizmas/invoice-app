@@ -70,7 +70,7 @@ const ItemsList = () => {
                     Atnaujinti
                   </Link>
                   <button
-                    className="btn btn-outline-danger mt-2"
+                    className="btn btn-outline-danger ml-2"
                     onClick={(e) => {
                       handleDelete(item.id);
                     }}
