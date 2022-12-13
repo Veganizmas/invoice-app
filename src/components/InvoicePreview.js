@@ -134,26 +134,37 @@ const InvoicePreview = () => {
     //     <Link to="/invoices">Atgal į sąrašą</Link>
     // </div>
 
-    <>
+    <div className="bendras">
       <div className="logo-container">
         <img src="https://codeacademy.lt/wp-content/uploads/2021/05/CodeAcademy-visi_Logotipas-juodas.png" />
       </div>
 
       <table className="sask-info">
         <tr>
-          <td>Sąskaitos Nr.: {invoiceNumber}</td>
+          <td>
+            Sąskaitos Nr: <span>{invoiceNumber}</span>
+          </td>
           <td></td>
         </tr>
         <tr>
-          <td>Pirkėjas: {customer}</td>
+          <td>
+            Pirkėjas:{" "}
+            <span>
+              {customerId.vardas} {customerId.pavarde}
+            </span>
+          </td>
           <td></td>
         </tr>
         <tr>
-          <td>Data: {myDate}</td>
+          <td>
+            Data: <span>{myDate}</span>
+          </td>
           <td></td>
         </tr>
         <tr>
-          <td>Adresas: </td>
+          <td>
+            Adresas: <span>{customerId.adresas}</span>
+          </td>
           <td></td>
         </tr>
       </table>
@@ -170,9 +181,9 @@ const InvoicePreview = () => {
         </thead>
         <tbody>
           <tr>
-            <td>{}</td>
             <td></td>
-            <td>2</td>
+            <td></td>
+            <td>{invoiceItems}</td>
             <td className="right">15 EUR</td>
             <td className="right">30 EUR</td>
           </tr>
@@ -205,7 +216,7 @@ const InvoicePreview = () => {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 
