@@ -1,5 +1,8 @@
 body {
   font-size: 16px;
+}
+
+.bendras {
   margin-left: 400px;
   margin-right: 400px;
 }
@@ -153,5 +156,10 @@ table tr td:last-child {
 }
 
 img {
-  height: 30px;
+  height: 50px;
+}
+
+span {
+  font-weight: 400;
+  font-size: 16px;
 }
