@@ -39,7 +39,12 @@ const ItemsList = () => {
       <h3>Prekių sąrašas</h3>
       <hr />
       <div>
-        <Link to = "/items/add" className="btn btn-outline-primary btn-block btn-lg mb-2">Pridėti prekę</Link>
+        <Link
+          to="/items/add"
+          className="btn btn-outline-primary btn-block btn-lg mb-2"
+        >
+          Pridėti prekę
+        </Link>
         <table
           border="1"
           cellPadding="10"
@@ -64,9 +69,10 @@ const ItemsList = () => {
                 <td>{item.grupe}</td>
                 <td>{item.statusas}</td>
                 <td>
-                
-        
-                  <Link to={`/items/edit/${item.id}`} className="btn btn-outline-success">
+                  <Link
+                    to={`/items/edit/${item.id}`}
+                    className="btn btn-outline-success mt-2 mr-2"
+                  >
                     Atnaujinti
                   </Link>
                   <button
