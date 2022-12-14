@@ -37,7 +37,7 @@ const AddInvoice = () => {
       .getAll()
       .then((response) => {
         console.log("Printing Items data", response.data);
-        setInvoiceItems(response.data);
+        setItems(response.data);
       })
       .catch((error) => {
         console.log("Ups", error);
@@ -47,13 +47,23 @@ const AddInvoice = () => {
   const saveInvoice = (e) => {
     e.preventDefault();
 
-    const invoice = {
-      invoiceNumber,
-      myDate,
-      customerId,
-      selectedInvoiceItems,
-      id,
-    }; ////
+    const invoiceItems = [{item:items.find(items => items.id === 1),
+      quantity: "28"},
+      {item:items.find(items => items.id === 2),
+          quantity: "72"
+         }
+    ];
+    const invoice = {invoiceNumber, myDate, invoiceItems, customerId ,id } ;
+
+
+
+    // const invoice = {
+    //   invoiceNumber,
+    //   myDate,
+    //   customerId,
+    //   selectedInvoiceItems,
+    //   id,
+    // }; ////
     if (id) {
       // update record
       invoiceService
@@ -147,7 +157,7 @@ const AddInvoice = () => {
             getOptionValue={(a) => a}
             className=" col-4"
             id="customer"
-            //value={}
+            value={customerId}
             onChange={setMyCustomer}
           ></Select>
         </div>
