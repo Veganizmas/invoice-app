@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 function SecurityApp() {
   const [usernameReg, setUsernameReg] = useState("");
@@ -9,6 +11,8 @@ function SecurityApp() {
   const [password, setPassword] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
+
+  const navigate = useNavigate();
 
   const register = () => {
     axios
@@ -32,12 +36,13 @@ function SecurityApp() {
           setLoginStatus(response.data.message);
         } else {
           setLoginStatus(response.data[0].username);
+          navigate("/home");
         }
       });
   };
 
   return (
-    <div style={{ marginLeft: 50 }}>
+    <div className="container">
       <div>
         <h1>Registration</h1>
         <input
