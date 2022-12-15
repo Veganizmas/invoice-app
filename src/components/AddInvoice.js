@@ -7,21 +7,24 @@ import customerService from "../services/customer.service";
 import CustomersList from "./CustomersList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
+import Multiselect from "multiselect-react-dropdown";
 
 const AddInvoice = () => {
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [myDate, setDate] = useState("");
   const [customer, setCustomer] = useState([]);
-  const [item, setItem] = useState([]);
-  const [invoiceItems, setInvoiceItems] = useState([]);
-  const [quantity, setQuantity] = useState("");
+  const [invoiceItems, setInvoiceItems] = useState([
+    { item: "", quantity: "" },
+  ]); ////
   const navigate = useNavigate();
   const { id } = useParams();
   const [customerId, setCustomers] = useState([]);
+  // const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
+  const [quantitys, setQuantitys] = useState("");
   const [items, setItems] = useState([]);
-  const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
-  const [formValues, setFormValues] = useState([{ name: "", email: "" }]);
+  //const [formValues, setFormValues] = useState()     ///////////
 
+  const [item, setItem] = useState([]);
   const init = () => {
     customerService
       .getAll()
@@ -37,7 +40,7 @@ const AddInvoice = () => {
       .getAll()
       .then((response) => {
         console.log("Printing Items data", response.data);
-        setInvoiceItems(response.data);
+        setItems(response.data);
       })
       .catch((error) => {
         console.log("Ups", error);
@@ -47,13 +50,8 @@ const AddInvoice = () => {
   const saveInvoice = (e) => {
     e.preventDefault();
 
-    const invoice = {
-      invoiceNumber,
-      myDate,
-      customerId,
-      selectedInvoiceItems,
-      id,
-    }; ////
+    const invoice = { invoiceNumber, myDate, invoiceItems, customerId, id };
+
     if (id) {
       // update record
       invoiceService
@@ -89,8 +87,8 @@ const AddInvoice = () => {
           setInvoiceNumber(invoice.data.invoiceNumber);
           setDate(invoice.data.myDate);
           setCustomers(invoice.data.customerId);
-          setInvoiceItems(invoice.data.invoiceItems);
-          setSelectedInvoiceItems(invoice.data.selectedInvoiceItems);
+          //  setSelectedInvoiceItems(invoice.data.selectedInvoiceItems);
+          console.log("if idddddddd");
         })
         .catch((error) => {
           console.log("Something went wrong", error);
@@ -98,36 +96,30 @@ const AddInvoice = () => {
     }
   }, []);
 
-  const setMyCustomer = (e) => {
-    console.log(e);
-    setCustomers(e);
-  };
-
   let addFormFields = () => {
     /////////////////////
-    setFormValues([...formValues, { name: "", email: "" }]);
+    setInvoiceItems([...invoiceItems, { item: "", quantity: "" }]);
   };
 
   let removeFormFields = (i) => {
-    let newFormValues = [...formValues];
-    newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    let newInvoiceItems = [...invoiceItems];
+    newInvoiceItems.splice(i, 1);
+    setInvoiceItems(newInvoiceItems);
   };
 
-  let handleChange = (i, e) => {
-    let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+  let handleChange = (option, index, name) => {
+    const value = option;
+    const list = [...invoiceItems];
+    list[index][name] = value;
+    setInvoiceItems(list);
   };
-
-  console.log(customerId);
 
   return (
     <div className="container">
       <h3>Pridėti saskaita</h3>
       <hr />
       <form>
-        <div className="form-group">{/* <p>{invoiceNumber}</p> */}</div>
+        <div className="form-group"></div>
 
         <div className="form-group">
           <input
@@ -142,13 +134,13 @@ const AddInvoice = () => {
 
         <div className="form-group">
           <Select
+            value={customerId}
             options={customer}
             getOptionLabel={(a) => a.vardas + " " + a.pavarde}
             getOptionValue={(a) => a}
             className=" col-4"
             id="customer"
-            //value={}
-            onChange={setMyCustomer}
+            onChange={(e) => setCustomers(e)}
           ></Select>
         </div>
         <div className="form-group">
@@ -163,33 +155,42 @@ const AddInvoice = () => {
         </div>
 
         <div className="form-block">
-          {formValues.map((element, index) => (
-            <div className="form-inline" key={index}>
-              <Select
-                className="col-4"
-                options={invoiceItems}
-                getOptionLabel={(a) => a.pavadinimas}
-                getOptionValue={(a) => a}
-                onChange={(e) => setSelectedInvoiceItems(e)}
-              />
-              <input
-                type="text"
-                className="form-control col-4"
-                placeholder="Iveskite kieki"
-                //value={element.email || ""}
-                onChange={(e) => handleChange(index, e)}
-              />
-              {index ? (
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={() => removeFormFields(index)}
-                >
-                  Remove
-                </button>
-              ) : null}
-            </div>
-          ))}
+          {invoiceItems.map((element, index) => {
+            return (
+              <div className="form-inline" key={index}>
+                <Select
+                  className="col-4"
+                  name="item"
+                  options={items}
+                  getOptionLabel={(a) => a.pavadinimas}
+                  getOptionValue={(a) => a}
+                  value={element.item}
+                  onChange={(e) => handleChange(e, index, "item")}
+                />
+
+                <input
+                  type="text"
+                  name="quantity"
+                  className="form-control col-4"
+                  placeholder="Iveskite kieki"
+                  value={element.quantity}
+                  onChange={(e) =>
+                    handleChange(e.target.value, index, "quantity")
+                  }
+                />
+
+                {invoiceItems.length > 1 && (
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => removeFormFields(index)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            );
+          })}
           <button
             className="btn btn-danger"
             type="button"
@@ -211,5 +212,5 @@ const AddInvoice = () => {
     </div>
   );
 };
-
+//fdsfds
 export default AddInvoice;

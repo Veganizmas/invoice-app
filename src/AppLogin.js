@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import NotFound from "./components/NotFound";
 
 import AuthService from "./services/auth.service";
 
@@ -12,6 +13,8 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import ItemsList from "./components/ItemsList";
+import Layout from "./pages/StartLayout";
 
 //testas
 // import AuthVerify from "./common/auth-verify";
@@ -68,11 +71,29 @@ class AppLogin extends Component {
             CodeAcademy
           </Link>
           <div className="navbar-nav mr-auto">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
+            </li> */}
+
+            {/* <li className="nav-item">
+              <Link to={"/items"} className="nav-link">
+                Prekės
+              </Link>
             </li>
+
+            <li className="nav-item">
+              <Link to={"/customers"} className="nav-link">
+                Klientai
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to={"/invoices"} className="nav-link">
+                Sąskaitos
+              </Link>
+            </li> */}
 
             {showModeratorBoard && (
               <li className="nav-item">
@@ -132,13 +153,15 @@ class AppLogin extends Component {
         <div className="container mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            {/* <Route path="/layout" element={<Layout />} /> */}
+            {/* <Route path="/items" element={<ItemsList />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/mod" element={<BoardModerator />} />
-            <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/admin" element={<ItemsList />} />
+            <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </div>
 

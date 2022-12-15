@@ -41,6 +41,7 @@ export default class BoardUser extends Component {
       <div className="container">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
+          <h1>Mato tik User</h1>
         </header>
       </div>
     );

@@ -16,7 +16,8 @@ import Registration from "./security/Registration";
 const App = () => {
   return (
     <>
-      <StartLayout />
+      <Layout />
+      {/* <StartLayout /> */}
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
         <Route path="/login/" element={<Login />}></Route>
