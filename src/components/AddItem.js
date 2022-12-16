@@ -4,51 +4,49 @@ import {useEffect, useState} from "react";
 import itemService from "../services/item.service";
 
 const AddItem = () => {
-  const [pavadinimas, setItemName] = useState('');
+    const [pavadinimas, setItemName] = useState('');
     const [kodas, setItemCode] = useState('');
     const [aprasymas, setItemDescription] = useState('');
     const [grupe, setItemGroup] = useState('');
     const [statusas, setItemStatus] = useState('');
+    const [bazineKaina, setBazineKaina] = useState('');
     const navigate = useNavigate();
     const {id} = useParams();
 
     const saveItem = (e) => {
         e.preventDefault();
-
-        const item = {pavadinimas, kodas, aprasymas, grupe, statusas, id};
+        const item = {pavadinimas, kodas, aprasymas, grupe, statusas, bazineKaina, id};
+        
         if (id) {
-            // update record
             itemService.update(item)
                 .then(response => {
-                    console.log('Item data updated successfully', response.data);
+                    console.log('Item data updated successfully', response.data);////////
                     navigate('/items'); 
-            })
-            .catch(error => {
-                console.log('Something went wrong', error);
-            })
-        } else {
-            // create new record
+                })
+                .catch(error => {
+                    console.log('Something went wrong', error);
+                })}
+         else {
             itemService.create(item)
-            .then(response => {
-                console.log('Item added successfully',  response.data);
-                navigate('/items');
-            })
-            .catch(error => {
-                console.log('Something went wrong', error);
-            })
+                .then(response => {
+                    console.log('Item added successfully',  response.data);////////
+                    navigate('/items');
+                })
+                .catch(error => {
+                    console.log('Something went wrong', error);
+                })}  
         }
-    }
 
     useEffect(() => {
         if (id) {
           itemService.get(id)
-                .then(item => {
-                    setItemName(item.data.pavadinimas);
-                    setItemCode(item.data.kodas);
-                    setItemDescription(item.data.aprasymas);
-                    setItemGroup(item.data.grupe);
-                    setItemStatus(item.data.statusas);
-                   
+            .then(item => {
+                setItemName(item.data.pavadinimas);
+                setItemCode(item.data.kodas);
+                setItemDescription(item.data.aprasymas);
+                setItemGroup(item.data.grupe);
+                setItemStatus(item.data.statusas);
+                setBazineKaina(item.data.bazineKaina);     
             })
             .catch(error => {
                 console.log('Something went wrong', error);
@@ -70,8 +68,8 @@ const AddItem = () => {
                         onChange={(e) => setItemName(e.target.value)}
                         placeholder="Įveskite prekės pavadinimą"
                      />
-
                 </div>
+
                 <div className="form-group">
                     <input
                        type="text"
@@ -81,8 +79,8 @@ const AddItem = () => {
                        onChange={(e) => setItemCode(e.target.value)}
                        placeholder="Įveskite prekės kodą"
                     /> 
-
                 </div>
+
                 <div className="form-group">
                     <input
                        type="text"
@@ -92,8 +90,8 @@ const AddItem = () => {
                        onChange={(e) => setItemDescription(e.target.value)}
                        placeholder="įveskite prekės aprašymą"
                     /> 
-
                 </div>
+
                 <div className="form-group">
                     <input
                        type="text"
@@ -103,8 +101,8 @@ const AddItem = () => {
                        onChange={(e) => setItemGroup(e.target.value)}
                        placeholder="įveskite grupę"
                     /> 
-
                 </div>
+
                 <div className="form-group">
                     <input
                        type="text"
@@ -113,8 +111,19 @@ const AddItem = () => {
                        value={statusas}
                        onChange={(e) => setItemStatus(e.target.value)}
                        placeholder="įveskite statusą"
-                    /> 
+                    />
+                </div>
 
+                <div className="form-group">
+                    <input
+                       type="number" 
+                       step="0.01"
+                       className="form-control col-4"
+                       id="bazineKaina"
+                       value={bazineKaina}
+                       onChange={(e) => setBazineKaina(e.target.value)}
+                       placeholder="įveskite bazine kaina"
+                    /> 
                 </div>
                 <br />
                 <div>
