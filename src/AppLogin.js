@@ -152,10 +152,13 @@ class AppLogin extends Component {
 
         <div className="container mt-3">
           <Routes>
+            {/* tik autentifikuotiem */}
             <Route element={<PrivateRoutes />}>
               <Route element={<BoardAdmin />} path="/admin"></Route>
               <Route element={<ItemsList />} path="/items"></Route>
             </Route>
+
+            {/* visiems */}
             <Route path="/" element={<Home />} />
             {/* <Route path="/layout" element={<Layout />} /> */}
             <Route path="/items" element={<ItemsList />} />
