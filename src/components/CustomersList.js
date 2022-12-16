@@ -72,7 +72,7 @@ const CustomersList = () => {
                 <td>{customer.adresas}</td>
                 <td>{customer.telNumeris}</td>
                 <td>{customer.klientoStatusas}</td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <Link
                     to={`/customers/edit/${customer.id}`}
                     className="btn btn-outline-success mt-2 mr-2"

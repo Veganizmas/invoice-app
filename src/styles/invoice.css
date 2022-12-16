@@ -29,7 +29,7 @@ table tr td:last-child {
 }
 
 .large {
-  font-size: 1.75em;
+  font-size: 20px;
 }
 
 .total {
@@ -105,46 +105,14 @@ table tr td:last-child {
   line-height: 1.5;
 }
 
-.footer {
-  margin-top: 100px;
-}
-
-.footer-thanks {
-  font-size: 1.125em;
-}
-
-.footer-thanks img {
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  width: 16px;
-  margin-right: 4px;
-}
-
-.footer-info {
-  float: right;
-  margin-top: 5px;
-  font-size: 0.75em;
-  color: #ccc;
-}
-
-.footer-info span {
-  padding: 0 5px;
-  color: black;
-}
-
-.footer-info span:last-child {
-  padding-right: 0;
-}
-
 .page-container {
   display: none;
 }
 
 .pvm {
   text-align: right;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 16px;
+  /* font-weight: bold; */
   margin-right: 50px;
 }
 
@@ -161,5 +129,9 @@ img {
 
 span {
   font-weight: 400;
+  font-size: 16px;
+}
+
+.item {
   font-size: 16px;
 }

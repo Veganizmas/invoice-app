@@ -12,13 +12,13 @@ const InvoicePreview = () => {
   const [bendraSuma, setBendraSuma] = useState("");
   const [bendraSumaSuPvm, setBendraSumaSuPvm] = useState("");
   const [PVM, SetPvm] = useState([]);
-  
-useEffect(() => {
+
+  useEffect(() => {
     if (id) {
       invoiceService
         .get(id)
         .then((response) => {
-          console.log("Printing Invoices data", response.data);///////////////////////////
+          console.log("Printing Invoices data", response.data); ///////////////////////////
           setInvoiceItems(response.data.invoiceItems);
           setCustomerId(response.data.customerId);
           setInvoice(response.data);
@@ -27,24 +27,27 @@ useEffect(() => {
         .catch((error) => {
           console.log("Something went wrong", error);
         });
-    }      
-}, []);
+    }
+  }, []);
 
-let countSuma = (invoiceItems) => {
+  let countSuma = (invoiceItems) => {
     setBendraSuma(0);
     var sumaCount = 0;
     const list = [...suma];
-    invoiceItems.map((item, index) => (
-       list[index] = (invoiceItems[index].item.bazineKaina * Number(invoiceItems[index].quantity)),
-       setSuma(list),
-       console.log("numeris: " + list[index]),/////////
-       sumaCount += list[index],
-       setBendraSuma(sumaCount),
-       setBendraSumaSuPvm((sumaCount*1.21).toFixed(2)),
-       SetPvm((sumaCount*0.21).toFixed(2))
-    ))
-}
-
+    invoiceItems.map(
+      (item, index) => (
+        (list[index] =
+          invoiceItems[index].item.bazineKaina *
+          Number(invoiceItems[index].quantity)),
+        setSuma(list),
+        console.log("numeris: " + list[index]), /////////
+        (sumaCount += list[index]),
+        setBendraSuma(sumaCount),
+        setBendraSumaSuPvm((sumaCount * 1.21).toFixed(2)),
+        SetPvm((sumaCount * 0.21).toFixed(2))
+      )
+    );
+  };
 
   return (
     <div className="bendras">
@@ -58,30 +61,32 @@ let countSuma = (invoiceItems) => {
             <td>
               Sąskaitos Nr: <span>{invoice.invoiceNumber}</span>
             </td>
-          <td></td>
+            <td></td>
           </tr>
-        
+
           <tr>
             <td>
-              Pirkėjas: <span>{customerId.vardas} {customerId.pavarde}</span>
+              Pirkėjas:{" "}
+              <span>
+                {customerId.vardas} {customerId.pavarde}
+              </span>
             </td>
             <td></td>
           </tr>
-          
+
           <tr>
             <td>
               Data: <span>{invoice.myDate}</span>
             </td>
             <td></td>
           </tr>
-          
+
           <tr>
             <td>
               Adresas: <span>{customerId.adresas}</span>
             </td>
             <td></td>
           </tr>
-        
         </tbody>
       </table>
 
@@ -90,31 +95,39 @@ let countSuma = (invoiceItems) => {
           <tr>
             <th className="heading-description">Prekės kodas</th>
             <th className="heading-description">Prekės pavadinimas</th>
-            <th className="heading-quantity">Kiekis</th>
-            <th className="heading-price">Kaina</th>
-            <th className="heading-subtotal">Suma</th>
+            <th className="heading-description">Kiekis</th>
+            <th className="heading-subtotal">Kaina</th>
+            <th className="heading-price">Suma</th>
           </tr>
         </thead>
-        <tbody>
-   
-        {invoiceItems.map((item, index) => (
-          <tr key={index}>
-            <td> {invoiceItems[index].item.kodas} </td>
-            <td> {invoiceItems[index].item.pavadinimas} </td>
-            <td> {invoiceItems[index].quantity} </td>
-            <td > {invoiceItems[index].item.bazineKaina} </td>
-            <td> {suma[index].toFixed(2)} </td>
-          </tr>
-        ))}
+        <tbody className="item">
+          {invoiceItems.map((item, index) => (
+            <tr key={index}>
+              <td> {invoiceItems[index].item.kodas} </td>
+              <td> {invoiceItems[index].item.pavadinimas} </td>
+              <td> {invoiceItems[index].quantity} </td>
+              <td> {invoiceItems[index].item.bazineKaina} </td>
+              <td> {suma[index].toFixed(2)} </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      
+
       <div>
-        <p className="pvm">Suma: {bendraSuma} </p>
-        <p className="pvm">PVM: {PVM} (21%)</p>
-        <p className="pvm">Suma su PVM: {bendraSumaSuPvm}</p>
+        <p className="pvm">
+          <b>Suma: </b>
+          {bendraSuma}{" "}
+        </p>
+        <p className="pvm">
+          <b>PVM (21%): </b>
+          {PVM}
+        </p>
+        <p className="pvm">
+          <b>Suma su PVM: </b>
+          {bendraSumaSuPvm}
+        </p>
       </div>
-      
+
       <table className="line-items-container has-bottom-border">
         <thead>
           <tr>
@@ -123,7 +136,7 @@ let countSuma = (invoiceItems) => {
             <th> Viso: </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ fontSize: 16 }}>
           <tr>
             <td>
               <div>
@@ -137,7 +150,10 @@ let countSuma = (invoiceItems) => {
           </tr>
         </tbody>
       </table>
-      <Link to="/invoices">Atgal į sąrašą</Link>
+      <br></br>
+      <div style={{ textAlign: "center" }}>
+        <Link to="/invoices">Atgal į sąrašą</Link>
+      </div>
     </div>
   );
 };
