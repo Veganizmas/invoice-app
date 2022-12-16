@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import NotFound from "./components/NotFound";
@@ -15,8 +15,8 @@ import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import ItemsList from "./components/ItemsList";
 import Layout from "./pages/StartLayout";
+import PrivateRoutes from "./components/PrivateRoutes";
 
-//testas
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 
@@ -152,15 +152,19 @@ class AppLogin extends Component {
 
         <div className="container mt-3">
           <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route element={<BoardAdmin />} path="/admin"></Route>
+              <Route element={<ItemsList />} path="/items"></Route>
+            </Route>
             <Route path="/" element={<Home />} />
             {/* <Route path="/layout" element={<Layout />} /> */}
-            {/* <Route path="/items" element={<ItemsList />} /> */}
+            <Route path="/items" element={<ItemsList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/mod" element={<BoardModerator />} />
-            <Route path="/admin" element={<ItemsList />} />
+            {/* <Route path="/admin" element={<BoardAdmin />} /> */}
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </div>
