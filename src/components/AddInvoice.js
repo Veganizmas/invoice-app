@@ -7,7 +7,6 @@ import customerService from "../services/customer.service";
 import CustomersList from "./CustomersList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
-import Multiselect from "multiselect-react-dropdown";
 
 const AddInvoice = () => {
   const [invoiceNumber, setInvoiceNumber] = useState("");
