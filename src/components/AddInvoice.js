@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import invoiceService from "../services/invoice.service";
 import customerService from "../services/customer.service";
-import CustomersList from "./CustomersList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
 
@@ -14,32 +13,28 @@ const AddInvoice = () => {
   const [customer, setCustomer] = useState([]);
   const [invoiceItems, setInvoiceItems] = useState([
     { item: "", quantity: "" },
-  ]); ////
+  ]);
   const navigate = useNavigate();
   const { id } = useParams();
   const [customerId, setCustomers] = useState([]);
-  // const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
-  const [quantitys, setQuantitys] = useState("");
   const [items, setItems] = useState([]);
-  //const [formValues, setFormValues] = useState()     ///////////
 
-  const [item, setItem] = useState([]);
   const init = () => {
     customerService
-        .getAll()
-        .then((response) => {
-            console.log("Printing Customer data", response.data);
-            setCustomer(response.data);
-        })
-        .catch((error) => {
-            console.log("Ups", error);
-        });
+      .getAll()
+      .then((response) => {
+        console.log("Printing Customer data", response.data); ////
+        setCustomer(response.data);
+      })
+      .catch((error) => {
+        console.log("Ups", error);
+      });
 
       
     itemService
       .getAll()
       .then((response) => {
-        console.log("Printing Items data", response.data);
+        console.log("Printing Items data", response.data); /////
         setItems(response.data);
       })
       .catch((error) => {
@@ -49,20 +44,29 @@ const AddInvoice = () => {
 
   const saveInvoice = (e) => {
     e.preventDefault();
-
     const invoice = { invoiceNumber, myDate, invoiceItems, customerId, id };
 
     if (id) {
-      // update record
       invoiceService
         .update(invoice)
         .then((response) => {
-            console.log("Printing Items data", response.data);
-            setItems(response.data);
+          console.log("Invoice data updated successfully", response.data); ////
+          navigate("/invoices");
         })
         .catch((error) => {
-            console.log("Ups", error);
-        });  
+          console.log("Something went wrong", error);
+        });
+    } else {
+      invoiceService
+        .create(invoice)
+        .then((response) => {
+          console.log("Invoice added successfully", response.data);
+          navigate("/invoices");
+        })
+        .catch((error) => {
+          console.log("Something went wrong555", error);
+        });
+    }
   };
    
 
@@ -125,8 +129,7 @@ const saveInvoice = (e) => {
           setInvoiceNumber(invoice.data.invoiceNumber);
           setDate(invoice.data.myDate);
           setCustomers(invoice.data.customerId);
-          //  setSelectedInvoiceItems(invoice.data.selectedInvoiceItems);
-          console.log("if idddddddd");
+          setInvoiceItems(invoice.data.invoiceItems);
         })
         .catch((error) => {
           console.log("Something went wrong", error);
@@ -153,11 +156,9 @@ const saveInvoice = (e) => {
 
   return (
     <div className="container">
-      <h3>Pridėti saskaita</h3>
+      <h3>Pridėti sąskaitą</h3>
       <hr />
       <form>
-        <div className="form-group"></div>
-
         <div className="form-group">
           <input
             type="date"
@@ -180,6 +181,7 @@ const saveInvoice = (e) => {
             onChange={(e) => setCustomers(e)}
           ></Select>
         </div>
+
         <div className="form-group">
           <input
             type="text"
@@ -209,7 +211,7 @@ const saveInvoice = (e) => {
                   type="text"
                   name="quantity"
                   className="form-control col-4"
-                  placeholder="Iveskite kieki"
+                  placeholder="Įveskite kiekį"
                   value={element.quantity}
                   onChange={(e) =>
                     handleChange(e.target.value, index, "quantity")
@@ -219,28 +221,32 @@ const saveInvoice = (e) => {
                 {invoiceItems.length > 1 && (
                   <button
                     type="button"
-                    className="btn btn-success"
+                    className="btn btn-outline-success ml-2 mb-1"
                     onClick={() => removeFormFields(index)}
                   >
-                    Remove
+                    Ištrinti
                   </button>
                 )}
               </div>
             );
           })}
+
           <button
-            className="btn btn-danger"
+            className="btn btn-outline-danger mt-2"
             type="button"
             onClick={() => addFormFields()}
           >
-            Add
+            Pridėti
           </button>
         </div>
 
         <br />
         <div>
-          <button onClick={(e) => saveInvoice(e)} className="btn btn-primary">
-            Save
+          <button
+            onClick={(e) => saveInvoice(e)}
+            className="btn btn-outline-primary mb-2"
+          >
+            Išsaugoti
           </button>
         </div>
       </form>
@@ -248,6 +254,6 @@ const saveInvoice = (e) => {
       <Link to="/invoices">Atgal į sąrašą</Link>
     </div>
   );
-}};
+};
 
 export default AddInvoice;

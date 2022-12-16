@@ -39,7 +39,12 @@ const InvoiceList = () => {
       <h3>Sąskaitų sąrašas</h3>
       <hr />
       <div>
-        <Link to = "/invoices/add" className="btn btn-outline-primary btn-block btn-lg mb-2">Pridėti sąskaitą</Link>
+        <Link
+          to="/invoices/add"
+          className="btn btn-outline-primary btn-block btn-lg mb-2"
+        >
+          Pridėti sąskaitą
+        </Link>
         <table
           border="1"
           cellPadding="10"
@@ -58,16 +63,24 @@ const InvoiceList = () => {
               <tr key={invoice.id}>
                 <td>{invoice.invoiceNumber}</td>
                 <td>{invoice.myDate}</td>
-                <td>{invoice.customerId.vardas + " " + invoice.customerId.pavarde}</td>
                 <td>
-                <Link to={`/invoices/invoicepreview/${invoice.id}`} className="btn btn-outline-info mr-2">
+                  {invoice.customerId.vardas + " " + invoice.customerId.pavarde}
+                </td>
+                <td style={{ textAlign: "center" }}>
+                  <Link
+                    to={`/invoices/invoicepreview/${invoice.id}`}
+                    className="btn btn-outline-info mr-2"
+                  >
                     Peržiūra
                   </Link>
 
-                  <Link to={`/invoices/edit/${invoice.id}`} className="btn btn-outline-success">
+                  <Link
+                    to={`/invoices/edit/${invoice.id}`}
+                    className="btn btn-outline-success"
+                  >
                     Atnaujinti
                   </Link>
-                  <button 
+                  <button
                     className="btn btn-outline-danger ml-2"
                     onClick={(e) => {
                       handleDelete(invoice.id);
@@ -75,7 +88,6 @@ const InvoiceList = () => {
                   >
                     Ištrinti
                   </button>
-                  
                 </td>
               </tr>
             ))}

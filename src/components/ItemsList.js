@@ -68,7 +68,7 @@ const ItemsList = () => {
                 <td>{item.aprasymas}</td>
                 <td>{item.grupe}</td>
                 <td>{item.statusas}</td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <Link
                     to={`/items/edit/${item.id}`}
                     className="btn btn-outline-success mt-2 mr-2"
