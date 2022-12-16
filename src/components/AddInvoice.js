@@ -7,25 +7,25 @@ import customerService from "../services/customer.service";
 import CustomersList from "./CustomersList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import itemService from "../services/item.service";
-//import Multiselect from "multiselect-react-dropdown";
-
-
+import Multiselect from "multiselect-react-dropdown";
 
 const AddInvoice = () => {
-    const [invoiceNumber, setInvoiceNumber] = useState('');
-    const [myDate, setDate] = useState('');
-    const [customer, setCustomer] = useState([]);
-   const [invoiceItems, setInvoiceItems] = useState([{ item: "", quantity: ""}]);////
-    const navigate = useNavigate();
-    const {id} = useParams();
-    const[customerId, setCustomers] = useState([]);
-   // const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
-    const[quantitys, setQuantitys] = useState('');
-    const [items, setItems] = useState([]);
-    //const [formValues, setFormValues] = useState()     ///////////
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [myDate, setDate] = useState("");
+  const [customer, setCustomer] = useState([]);
+  const [invoiceItems, setInvoiceItems] = useState([
+    { item: "", quantity: "" },
+  ]); ////
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [customerId, setCustomers] = useState([]);
+  // const [selectedInvoiceItems, setSelectedInvoiceItems] = useState([]);
+  const [quantitys, setQuantitys] = useState("");
+  const [items, setItems] = useState([]);
+  //const [formValues, setFormValues] = useState()     ///////////
 
-    const [item, setItem] = useState([]);
-    const init = () => {
+  const [item, setItem] = useState([]);
+  const init = () => {
     customerService
         .getAll()
         .then((response) => {
@@ -38,7 +38,25 @@ const AddInvoice = () => {
 
       
     itemService
-        .getAll()
+      .getAll()
+      .then((response) => {
+        console.log("Printing Items data", response.data);
+        setItems(response.data);
+      })
+      .catch((error) => {
+        console.log("Ups", error);
+      });
+  };
+
+  const saveInvoice = (e) => {
+    e.preventDefault();
+
+    const invoice = { invoiceNumber, myDate, invoiceItems, customerId, id };
+
+    if (id) {
+      // update record
+      invoiceService
+        .update(invoice)
         .then((response) => {
             console.log("Printing Items data", response.data);
             setItems(response.data);
@@ -101,114 +119,136 @@ const saveInvoice = (e) => {
         }
     },[])
 
-
-    let addFormFields = () => {  /////////////////////
-        setInvoiceItems([...invoiceItems, { item: "", quantity: "" }])
-      }
-    
-    let removeFormFields = (i) => {
-        let newInvoiceItems = [...invoiceItems];
-        newInvoiceItems.splice(i, 1);
-        setInvoiceItems(newInvoiceItems)
+    if (id) {
+      invoiceService
+        .get(id)
+        .then((invoice) => {
+          setInvoiceNumber(invoice.data.invoiceNumber);
+          setDate(invoice.data.myDate);
+          setCustomers(invoice.data.customerId);
+          //  setSelectedInvoiceItems(invoice.data.selectedInvoiceItems);
+          console.log("if idddddddd");
+        })
+        .catch((error) => {
+          console.log("Something went wrong", error);
+        });
     }
 
-      let handleChange = (option, index, name) => {
-        const value = option;
-        const list = [...invoiceItems];
-        list[index][name] = value;
-        setInvoiceItems(list);
-     }
+  let addFormFields = () => {
+    /////////////////////
+    setInvoiceItems([...invoiceItems, { item: "", quantity: "" }]);
+  };
 
-   
-    return(
-        <div className="container">
-            <h3>Pridėti saskaita</h3>
-            <hr/>
-            <form>
-                <div className="form-group">
-                </div>
-                
-                <div className="form-group">
-                    <input
-                       type="date"
-                       className="form-control col-4"
-                       id="date"
-                       value={myDate}
-                       onChange={(e) => setDate(e.target.value)}
-                       placeholder="Įveskite data"
-                    /> 
-                </div>
-                
-                <div className="form-group">
-                    <Select     
-                        value={customerId}             
-                        options={customer}
-                        getOptionLabel = {a => a.vardas + " " + a.pavarde}
-                        getOptionValue={a => a}  
-                        className=" col-4"
-                        id="customer"
-                        onChange={(e) => setCustomers(e)} 
-                        > 
-                    </Select>
-                </div>
-                <div className="form-group">
-                    <input
-                       type="text"
-                       className="form-control col-4"
-                       id="Invoice number"
-                       value={invoiceNumber}
-                       onChange={(e) => setInvoiceNumber(e.target.value)}
-                       placeholder="Įveskite sąskaitos numberį"
-                    />
-                </div>
+  let removeFormFields = (i) => {
+    let newInvoiceItems = [...invoiceItems];
+    newInvoiceItems.splice(i, 1);
+    setInvoiceItems(newInvoiceItems);
+  };
 
-                <div className="form-block"> 
-                    {invoiceItems.map((element, index) => { 
-                        return(
-                        
-                        <div className="form-inline" key={index}>
-                            <Select 
-                                className="col-4"
-                                name="item"
-                                options={items}
-                                getOptionLabel = {a => a.pavadinimas}
-                                getOptionValue = {a => a}
-                                value={element.item}
-                                onChange={e => handleChange(e, index, "item")}
-                            />
-                            
-                            <input 
-                                type="text"
-                                name="quantity"
-                                className="form-control col-4" 
-                                placeholder="Iveskite kieki" 
-                                value={element.quantity}     
-                                onChange = {e => handleChange(e.target.value, index, "quantity")}                              
-                            />
-                                 
-                            {
-                                invoiceItems.length > 1 &&(
-                                    <button type="button"  className="btn btn-success" onClick={() => removeFormFields(index)}>Remove</button> 
-                                )
-                            }
-                        </div>
-                    )})}
-                <button 
-                    className="btn btn-danger" 
-                    type="button" 
-                    onClick={() => addFormFields()}>Add</button>
-                </div>
+  let handleChange = (option, index, name) => {
+    const value = option;
+    const list = [...invoiceItems];
+    list[index][name] = value;
+    setInvoiceItems(list);
+  };
 
-                <br />
-                <div>
-                    <button onClick={(e) => saveInvoice(e)}
-                    className="btn btn-primary">Save</button>
-                </div>
-            </form>
-            <hr/>
-            <Link to="/invoices">Atgal į sąrašą</Link>
+  return (
+    <div className="container">
+      <h3>Pridėti saskaita</h3>
+      <hr />
+      <form>
+        <div className="form-group"></div>
+
+        <div className="form-group">
+          <input
+            type="date"
+            className="form-control col-4"
+            id="date"
+            value={myDate}
+            onChange={(e) => setDate(e.target.value)}
+            placeholder="Įveskite data"
+          />
         </div>
-    )
-};
-//fdsfds
+
+        <div className="form-group">
+          <Select
+            value={customerId}
+            options={customer}
+            getOptionLabel={(a) => a.vardas + " " + a.pavarde}
+            getOptionValue={(a) => a}
+            className=" col-4"
+            id="customer"
+            onChange={(e) => setCustomers(e)}
+          ></Select>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control col-4"
+            id="Invoice number"
+            value={invoiceNumber}
+            onChange={(e) => setInvoiceNumber(e.target.value)}
+            placeholder="Įveskite sąskaitos numberį"
+          />
+        </div>
+
+        <div className="form-block">
+          {invoiceItems.map((element, index) => {
+            return (
+              <div className="form-inline" key={index}>
+                <Select
+                  className="col-4"
+                  name="item"
+                  options={items}
+                  getOptionLabel={(a) => a.pavadinimas}
+                  getOptionValue={(a) => a}
+                  value={element.item}
+                  onChange={(e) => handleChange(e, index, "item")}
+                />
+
+                <input
+                  type="text"
+                  name="quantity"
+                  className="form-control col-4"
+                  placeholder="Iveskite kieki"
+                  value={element.quantity}
+                  onChange={(e) =>
+                    handleChange(e.target.value, index, "quantity")
+                  }
+                />
+
+                {invoiceItems.length > 1 && (
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => removeFormFields(index)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            );
+          })}
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={() => addFormFields()}
+          >
+            Add
+          </button>
+        </div>
+
+        <br />
+        <div>
+          <button onClick={(e) => saveInvoice(e)} className="btn btn-primary">
+            Save
+          </button>
+        </div>
+      </form>
+      <hr />
+      <Link to="/invoices">Atgal į sąrašą</Link>
+    </div>
+  );
+}};
+
 export default AddInvoice;

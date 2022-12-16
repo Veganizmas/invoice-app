@@ -16,10 +16,8 @@ export default function Layout() {
       </CustomLink>
 
       <ul>
-        <CustomLink to="/customers">Klientai </CustomLink>
-        <CustomLink to="/items">Prekės </CustomLink>
-        <CustomLink to="/invoices">Sąskaitos </CustomLink>
-        {/* <CustomLink to="/login">Log in </CustomLink> */}
+        <CustomLink to="/login">Log in </CustomLink>
+        <CustomLink to="/register">Sign up </CustomLink>
       </ul>
     </nav>
   );
