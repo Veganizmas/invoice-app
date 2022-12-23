@@ -2,9 +2,21 @@ import React, { useEffect, useState } from "react";
 import itemService from "../services/item.service";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import FilterItems from "./FilterItems";
 
 const ItemsList = () => {
   const [items, setItems] = useState([]);
+  const [filterTextValue, setFilterTextValue] = useState('All');
+
+  const filteredItemList = items.filter((product) => {
+    if(filterTextValue === 'Aktyvus'){
+      return product.statusas === 'Aktyvus';
+    } else if(filterTextValue === 'Neaktyvus'){
+      return product.statusas === 'Neaktyvus';
+    } else {
+      return product;
+    }
+  });
 
   useEffect(() => {
     init();
@@ -34,6 +46,10 @@ const ItemsList = () => {
       });
   };
 
+  const onFilterValueSelected = (filterValue) => {
+    setFilterTextValue(filterValue)
+  }
+
   return (
     <div className="container">
       <h3>Prekių sąrašas</h3>
@@ -61,7 +77,8 @@ const ItemsList = () => {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
+            <FilterItems filterValueSelected={onFilterValueSelected}></FilterItems>
+            {filteredItemList.map((item) => (
               <tr key={item.id}>
                 <td>{item.pavadinimas}</td>
                 <td>{item.kodas}</td>

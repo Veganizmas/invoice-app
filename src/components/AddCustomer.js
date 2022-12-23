@@ -138,15 +138,11 @@ const AddCustomer = () => {
             placeholder="įveskite telefono numerį"
           />
         </div>
-        <div className="form-group">
-          <input
-            type="text"
-            className="form-control col-4"
-            id="klientoStatusas"
-            value={klientoStatusas}
-            onChange={(e) => setCustomerStatus(e.target.value)}
-            placeholder="įveskite kliento statusą"
-          />
+        <div className="form-group ">
+          <select className="form-control col-4" onChange={(e) => setCustomerStatus(e.target.value)}>
+            <option value="Aktyvus">Aktyvus</option>
+            <option value="Neaktyvus">Neaktyvus</option>
+          </select>
         </div>
         <br />
         <div>

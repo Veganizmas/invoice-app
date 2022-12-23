@@ -2,9 +2,22 @@ import React, { useEffect, useState } from "react";
 import customerService from "../services/customer.service";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import FilterCustomers from "./FilterCustomers";
 
 const CustomersList = () => {
   const [customers, setItems] = useState([]);
+  const [filterCustomerValue, setFilterCustomerValue] = useState('All');
+
+  const filteredCustomerList = customers.filter((product) => {
+    if(filterCustomerValue === 'Aktyvus'){
+      return product.klientoStatusas === 'Aktyvus';
+    } else if(filterCustomerValue === 'Neaktyvus'){
+      return product.klientoStatusas === 'Neaktyvus';
+    } else {
+      return product;
+    }
+  });
+
 
   useEffect(() => {
     init();
@@ -33,6 +46,9 @@ const CustomersList = () => {
         console.log("Ups", error);
       });
   };
+  const onFilterValueSelected = (filterValue) => {
+    setFilterCustomerValue(filterValue)
+  }
 
   return (
     <div className="container">
@@ -63,7 +79,8 @@ const CustomersList = () => {
             </tr>
           </thead>
           <tbody>
-            {customers.map((customer) => (
+            <FilterCustomers filterValueSelected={onFilterValueSelected}></FilterCustomers>
+            {filteredCustomerList.map((customer) => (
               <tr key={customer.id}>
                 <td>{customer.vardas}</td>
                 <td>{customer.pavarde}</td>

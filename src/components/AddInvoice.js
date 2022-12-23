@@ -19,6 +19,16 @@ const AddInvoice = () => {
   const [customerId, setCustomers] = useState([]);
   const [items, setItems] = useState([]);
 
+
+  
+  const filteredCustomerList = customer.filter((product) => {
+      return product.klientoStatusas === 'Aktyvus';
+    });
+  
+  const filteredItemList = items.filter((product) => {
+        return product.statusas === 'Aktyvus';
+  });
+
   const init = () => {
     customerService
       .getAll()
@@ -41,37 +51,7 @@ const AddInvoice = () => {
         console.log("Ups", error);
       });
   };
-
-  const saveInvoice = (e) => {
-    e.preventDefault();
-    const invoice = { invoiceNumber, myDate, invoiceItems, customerId, id };
-
-    if (id) {
-      invoiceService
-        .update(invoice)
-        .then((response) => {
-          console.log("Invoice data updated successfully", response.data); ////
-          navigate("/invoices");
-        })
-        .catch((error) => {
-          console.log("Something went wrong", error);
-        });
-    } else {
-      invoiceService
-        .create(invoice)
-        .then((response) => {
-          console.log("Invoice added successfully", response.data);
-          navigate("/invoices");
-        })
-        .catch((error) => {
-          console.log("Something went wrong555", error);
-        });
-    }
-  };
-   
-
   
-
 const saveInvoice = (e) => {
         e.preventDefault();
 
@@ -98,6 +78,7 @@ const saveInvoice = (e) => {
             })
             .catch(error => {
                 console.log('Something went wrong555', error);
+                // padaryti alerta
             })
         }
     }
@@ -154,6 +135,7 @@ const saveInvoice = (e) => {
     setInvoiceItems(list);
   };
 
+
   return (
     <div className="container">
       <h3>Pridėti sąskaitą</h3>
@@ -170,10 +152,11 @@ const saveInvoice = (e) => {
           />
         </div>
 
+
         <div className="form-group">
           <Select
             value={customerId}
-            options={customer}
+            options={filteredCustomerList}
             getOptionLabel={(a) => a.vardas + " " + a.pavarde}
             getOptionValue={(a) => a}
             className=" col-4"
@@ -193,6 +176,8 @@ const saveInvoice = (e) => {
           />
         </div>
 
+
+
         <div className="form-block">
           {invoiceItems.map((element, index) => {
             return (
@@ -200,7 +185,7 @@ const saveInvoice = (e) => {
                 <Select
                   className="col-4"
                   name="item"
-                  options={items}
+                  options={filteredItemList}
                   getOptionLabel={(a) => a.pavadinimas}
                   getOptionValue={(a) => a}
                   value={element.item}
@@ -239,7 +224,7 @@ const saveInvoice = (e) => {
             Pridėti
           </button>
         </div>
-
+        
         <br />
         <div>
           <button
