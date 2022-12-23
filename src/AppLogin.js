@@ -8,14 +8,21 @@ import AuthService from "./services/auth.service";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
-import Home from "./components/home.component";
+// import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import ItemsList from "./components/ItemsList";
+import CustomersList from "./components/CustomersList";
+import InvoiceList from "./components/InvoiceList";
+import AddCustomer from "./components/AddCustomer";
+import AddItem from "./components/AddItem";
+import AddInvoice from "./components/AddInvoice";
+import InvoicePreview from "./components/InvoicePreview";
 import Layout from "./pages/StartLayout";
 import PrivateRoutes from "./components/PrivateRoutes";
+import Home from "./pages/Home";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
@@ -77,7 +84,7 @@ class AppLogin extends Component {
               </Link>
             </li> */}
 
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link to={"/items"} className="nav-link">
                 Prekės
               </Link>
@@ -93,7 +100,7 @@ class AppLogin extends Component {
               <Link to={"/invoices"} className="nav-link">
                 Sąskaitos
               </Link>
-            </li> */}
+            </li>
 
             {showModeratorBoard && (
               <li className="nav-item">
@@ -129,7 +136,7 @@ class AppLogin extends Component {
               </li>
               <li className="nav-item">
                 <a href="/login" className="nav-link" onClick={this.logOut}>
-                  LogOut
+                  Log Out
                 </a>
               </li>
             </div>
@@ -137,13 +144,13 @@ class AppLogin extends Component {
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/login"} className="nav-link">
-                  Login
+                  Log in
                 </Link>
               </li>
 
               <li className="nav-item">
                 <Link to={"/register"} className="nav-link">
-                  Sign Up
+                  Sign up
                 </Link>
               </li>
             </div>
@@ -154,20 +161,30 @@ class AppLogin extends Component {
           <Routes>
             {/* tik autentifikuotiem */}
             <Route element={<PrivateRoutes />}>
-              <Route element={<BoardAdmin />} path="/admin"></Route>
-              <Route element={<ItemsList />} path="/items"></Route>
+              {/* <Route element={<BoardAdmin />} path="/admin"></Route> */}
             </Route>
 
             {/* visiems */}
             <Route path="/" element={<Home />} />
-            {/* <Route path="/layout" element={<Layout />} /> */}
-            <Route path="/items" element={<ItemsList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/items/" element={<ItemsList />}></Route>
+            <Route path="/items/add" element={<AddItem />}></Route>
+            <Route path="/items/edit/:id" element={<AddItem />}></Route>
+            <Route path="/customers/" element={<CustomersList />}></Route>
+            <Route path="/customers/add/" element={<AddCustomer />}></Route>
+            <Route path="/customers/edit/:id" element={<AddCustomer />}></Route>
+            <Route path="/invoices" element={<InvoiceList />}></Route>
+            <Route path="/invoices/add/" element={<AddInvoice />}></Route>
+            <Route path="/invoices/edit/:id" element={<AddInvoice />}></Route>
+            <Route
+              path="/invoices/invoicepreview/:id"
+              element={<InvoicePreview />}
+            ></Route>
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/mod" element={<BoardModerator />} />
-            {/* <Route path="/admin" element={<BoardAdmin />} /> */}
+            <Route path="/admin" element={<BoardAdmin />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </div>
